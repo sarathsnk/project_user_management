@@ -34,15 +34,11 @@ class TaskViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def assign_user(self, request, pk=None):
         task = self.get_object()
-        user_id = request.data.get("user_id")
-
-        try:
-            user = User.objects.get(id=user_id)
-            task.assigned_to = user
-            task.save()
-            return Response({"message": "User assigned to task"})
-        except User.DoesNotExist:
-            return Response({"error": "User not found"}, status=404)
+        user_id = request.data.get('assigned_to')
+        user = User.objects.get(id=user_id)
+        task.assigned_to = user
+        task.save()
+        return Response({"message": "User assigned successfully"})
 
     # 6 → Update task status
     @action(detail=True, methods=['patch'])
